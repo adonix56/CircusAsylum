@@ -38,6 +38,10 @@ class AAIProjectCharacter : public ACharacter
 
 public:
 	AAIProjectCharacter();
+	/** Returns CameraBoom subobject **/
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	/** Returns FollowCamera subobject **/
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleCameraSwitch();
@@ -51,13 +55,7 @@ public:
 protected:
 
 	bool bFirstCamera;
-			
-
-protected:
-	// APawn interface
-	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	// To add mapping context
 	virtual void BeginPlay();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Perception, meta = (AllowPrivateAccess = "true"))
@@ -65,10 +63,5 @@ protected:
 
 	void SetupStimulusSource();
 
-public:
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
 
