@@ -3,6 +3,7 @@
 #include "AIProjectGameMode.h"
 #include "AIProjectCharacter.h"
 #include "AIProjectController.h"
+#include "ItemTableRow.h"
 #include "UObject/ConstructorHelpers.h"
 
 AAIProjectGameMode::AAIProjectGameMode()
@@ -21,4 +22,19 @@ AAIProjectGameMode::AAIProjectGameMode()
 	{
 		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}
+
+	ItemCatalogue = LoadObject<UDataTable>(nullptr, TEXT("/Game/Interactables/ItemCatalogue"));
+}
+
+UItem* AAIProjectGameMode::GetItemByID(int ItemID)
+{
+	FItemTableRow* Row = ItemCatalogue->FindRow<FItemTableRow>(FName(FString::FromInt(ItemID)), TEXT("GameMode GetItemByID"));
+	if (Row) {
+		UItem* GetItem = NewObject<UItem>();
+		GetItem->ItemID = ItemID;
+		GetItem->ItemName = Row->ItemName;
+		GetItem->ItemDescription = Row->Description;
+		return GetItem;
+	}
+	return nullptr;
 }

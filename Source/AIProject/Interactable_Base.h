@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/WidgetComponent.h"
+#include "Item.h"
 #include "Interactable_Base.generated.h"
 
 UCLASS()
@@ -24,6 +25,12 @@ public:
 	void InRange(bool inRange);
 	virtual void InRange_Implementation(bool inRange);
 
+	UFUNCTION(BlueprintCallable)
+	bool IsItem() const { return ItemID >= 0; }
+
+	UFUNCTION(BlueprintCallable)
+	UItem* GetItem();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,5 +41,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interact", meta = (AllowPrivateAccess = "true"))
 	FString InteractMessage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+	int ItemID = -1;
 	//virtual void Tick(float DeltaTime) override;
 };

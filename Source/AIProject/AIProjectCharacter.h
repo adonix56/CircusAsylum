@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Hearing.h"
+#include "Inventory.h"
 #include "AIProjectCharacter.generated.h"
 
 class USpringArmComponent;
@@ -52,6 +53,11 @@ public:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	UFUNCTION(BlueprintCallable)
+	void AcquireItem(UItem* Item);
+
+	//TODO: Test, remove later
+	void PrintItems();
 protected:
 
 	bool bFirstCamera;
@@ -62,6 +68,9 @@ protected:
 	UAIPerceptionStimuliSourceComponent* StimulusSource;
 
 	void SetupStimulusSource();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	UInventory* Inventory;
 
 };
 

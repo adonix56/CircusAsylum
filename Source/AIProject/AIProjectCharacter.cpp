@@ -56,6 +56,7 @@ AAIProjectCharacter::AAIProjectCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 }
 
 void AAIProjectCharacter::BeginPlay()
@@ -139,6 +140,26 @@ void AAIProjectCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void AAIProjectCharacter::AcquireItem(UItem* Item)
+{
+	UE_LOG(LogTemp, Warning, TEXT("ProjectCharacter: AcquireItem0"));
+	if (!Inventory) UE_LOG(LogTemp, Warning, TEXT("ProjectCharacter: Inventory null"));
+	if (!Item) UE_LOG(LogTemp, Warning, TEXT("ProjectCharacter: Item null"));
+	if (Inventory && Item) {
+		UE_LOG(LogTemp, Warning, TEXT("ProjectCharacter: AcquireItem1"));
+		Inventory->AddItem(Item);
+	}
+}
+
+//TODO: Test, remove later
+void AAIProjectCharacter::PrintItems()
+{
+	TArray<UItem*> Items = Inventory->GetItems();
+	for (UItem * item : Items) {
+		UE_LOG(LogTemp, Warning, TEXT("Item: %s"), *item->ItemName);
 	}
 }
 

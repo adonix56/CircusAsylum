@@ -43,6 +43,7 @@ void AAIProjectController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAIProjectController::OnMove);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAIProjectController::OnLook);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AAIProjectController::OnInteractStarted);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AAIProjectController::OnInventoryStarted);
 	}
 	else {
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
@@ -118,5 +119,18 @@ void AAIProjectController::OnInteractStarted()
 {
 	if (FocusedInteractable) {
 		FocusedInteractable->Interact();
+		AAIProjectCharacter* PlayerCharacter = GetPlayerCharacter();
+		if (PlayerCharacter && FocusedInteractable->IsItem()) {
+			UE_LOG(LogTemp, Warning, TEXT("Controller: Interact GetItem"));
+			PlayerCharacter->AcquireItem(FocusedInteractable->GetItem());
+		}
+	}
+}
+
+void AAIProjectController::OnInventoryStarted()
+{
+	AAIProjectCharacter* PlayerCharacter = GetPlayerCharacter();
+	if (PlayerCharacter) {
+		PlayerCharacter->PrintItems();
 	}
 }
